@@ -1,49 +1,78 @@
-# Dokumentation der Klasse /rbgrp/interval_checker
+# Überblick
+Diese Dokumentation beschreibt die Klasse `/rbgrp/interval_checker`, die verwendet wird, um zu prüfen, ob ein gegebener Wert innerhalb eines bestimmten Intervalls liegt.
 
-## Übersicht
-Die Klasse `interval_checker` ermöglicht die Überprüfung, ob ein gegebener Wert innerhalb eines definierten Intervalls liegt. Diese Klasse ist besonders nützlich in Situationen, in denen Genauigkeit und Fehlertoleranz bei Dezimalzahlen erforderlich sind.
-
-## Klassendefinition
-Die `interval_checker`-Klasse ist mit den folgenden Datenstrukturen und Typen vordefiniert:
-
-### Daten Typen
-**ts_interval_bounds**: Ein Typ, der die Grenzen eines Intervalls definiert:
-- `lower`: Die untere Grenze des Intervalls.
-- `upper`: Die obere Grenze des Intervalls.
-
-## Öffentliche und private Methoden
-### Öffentliche Methoden
-- **is_in_interval(value: DECIMAL)**: Überprüft, ob der gegebene Wert `value` im Intervall enthalten ist.
-- **extract_bounds(interval: ts_interval_bounds)**: Gibt die Grenzen des Intervalls als ein Array zurück.
-
-### Private Methoden
-Diese Methoden sind intern und nicht für den direkten Zugriff von außen vorgesehen.
-
-## Nutzung Beispiele
-### Beispiel 1: Verwendung mit Dezimalzahlen 
-```plaintext
-let checker = new interval_checker();
-let bounds = { lower: 5.5, upper: 10.4 };
-let result = checker.is_in_interval(7.2, bounds);
-console.log(result); // Gibt true zurück
+# Klasse Definition
+```abap
+type: class /rbgrp/interval_checker definition
+  public
+  methods:
+    is_in_interval importing value(iv_value) type i returning value(rv_result) type abap_bool,
+    extract_bounds returning value(rt_bounds) type ts_interval_bounds.
+endclass.
 ```
 
-### Beispiel 2: Verwendung mit Intervallnotation
-```plaintext
-let bounds1 = { lower: 3.0, upper: 7.0 };
-let bounds2 = { lower: 1.0, upper: 4.0 };
-let result1 = checker.is_in_interval(3.0, bounds1); // [3:7]
-let result2 = checker.is_in_interval(4.5, bounds2); // ]1:4]
+# Datentypen
+## ts_interval_bounds
+```abap
+type: begin of ts_interval_bounds,
+  lower_bound type i,
+  upper_bound type i,
+type: end of ts_interval_bounds.
 ```
 
-## Unit Tests Übersicht
-Die Klasse wird durch verschiedene Tests gedeckt, um sicherzustellen, dass die Methoden wie erwartet funktionieren. Prüfen Sie die Testabdeckung.
+# öffentliche Methoden
+## is_in_interval
+Hier wird überprüft, ob der eingegebene Wert innerhalb des definierten Intervalls liegt. Der Rückgabewert ist vom Typ `abap_bool` und zeigt an, ob der Wert im Intervall liegt oder nicht.
 
-## Technische Details
-### DECFLOAT34 Konvertierung
-Die Klasse ermöglicht eine präzise Handhabung von DECFLOAT34-Zahlen, um Genauigkeitsverluste zu minimieren.
-### Fehlerbehandlung
-Robuste Mechanismen zur Fehlerbehandlung sind implementiert, um ungültige Eingaben zu verwalten und sicherzustellen, dass die Funktionalität erhalten bleibt.
+# private Methoden
+## extract_bounds
+Diese Methode extrahiert die Grenzen des Intervalls und gibt sie als `ts_interval_bounds` zurück.
 
-## Fazit
-Diese Dokumentation ist gültig ab Version 1.0, erstellt am 2026-03-03. Die `interval_checker`-Klasse bietet eine effiziente und effektive Lösung zur Überprüfung von Intervallen in Ihrer Anwendung.
+# Detaillierte Verwendungsbeispiele in ABAP
+1. **Beispiel 1**: 
+```abap
+ DATA(lo_checker) = NEW /rbgrp/interval_checker().
+ DATA(lv_result) = lo_checker->is_in_interval( iv_value = 50 ).
+* Hier wird geprüft, ob 50 im Intervall liegt.
+```
+
+2. **Beispiel 2**: 
+```abap
+ DATA(lo_checker) = NEW /rbgrp/interval_checker().
+ DATA(lt_bounds) = lo_checker->extract_bounds().
+* Hier werden die Intervallgrenzen extrahiert.
+```
+
+3. **Beispiel 3**: 
+```abap
+ DATA(lo_checker) = NEW /rbgrp/interval_checker().
+ IF lo_checker->is_in_interval( iv_value = 100 ) = abap_true.
+* Prüfen, ob 100 im Intervall liegt und entsprechende Logik anwenden.
+```
+
+4. **Beispiel 4**: 
+```abap
+ DATA(lo_checker) = NEW /rbgrp/interval_checker().
+ DATA(lv_bound) = lo_checker->extract_bounds( ).
+* Grenzen werden extrahiert und weiterverarbeitet.
+```
+
+5. **Beispiel 5**: 
+```abap
+ DATA(lo_checker) = NEW /rbgrp/interval_checker().
+ IF lo_checker->is_in_interval( iv_value = 75 ) = abap_false.
+  " Logik bei Nichteinbezug ins Intervall.
+ ENDIF.
+```
+
+# Unit-Tests Übersicht
+Unit-Tests sind entscheidend, um sicherzustellen, dass die Methoden `is_in_interval` und `extract_bounds` wie erwartet funktionieren. Es sollten Tests für Grenzfälle durchgeführt werden.
+
+# Technische Details
+Die Klasse `/rbgrp/interval_checker` basiert auf den gängigen ABAP-Standards und verwendet die modernen Syntax-Elemente von ABAP 7.4 und höher.
+
+# Besonderheiten
+Besonderheiten der Klasse sind die Möglichkeit, dynamische Intervallgrenzen zu verwenden und die Verwendung von Rückgabewerten zur effektiven Fehlerbehandlung.
+
+# Zusammenfassung
+Die Klasse `/rbgrp/interval_checker` ist ein effektives Werkzeug zur Überprüfung von Werten innerhalb festgelegter Intervalle. Durch die öffentlichen und privaten Methoden kann die Klasse flexibel eingesetzt werden.
