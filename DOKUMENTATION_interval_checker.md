@@ -1,54 +1,49 @@
-# DOKUMENTATION für die Klasse /rbgrp/interval_checker
+# Dokumentation der Klasse /rbgrp/interval_checker
 
-## Einführung
-Die Klasse `interval_checker` ist ein wichtiges Werkzeug zur Überprüfung von Zeitintervallen und zur Durchführung von Zeitberechnungen.
+## Übersicht
+Die Klasse `interval_checker` ermöglicht die Überprüfung, ob ein gegebener Wert innerhalb eines definierten Intervalls liegt. Diese Klasse ist besonders nützlich in Situationen, in denen Genauigkeit und Fehlertoleranz bei Dezimalzahlen erforderlich sind.
 
-## Funktionsweise
-Die Klasse nutzt verschiedene Methoden, um Start- und Endzeiten zu überprüfen, sicherzustellen, dass sie gültig sind, und Rückgaben basierend auf den Berechnungen zu liefern.
+## Klassendefinition
+Die `interval_checker`-Klasse ist mit den folgenden Datenstrukturen und Typen vordefiniert:
 
-## Eigenschaften
-- **Startzeit**: Zeitpunkt, ab dem die Überprüfung beginnen soll.
-- **Endzeit**: Zeitpunkt, bis wann die Überprüfung gültig ist.
+### Daten Typen
+**ts_interval_bounds**: Ein Typ, der die Grenzen eines Intervalls definiert:
+- `lower`: Die untere Grenze des Intervalls.
+- `upper`: Die obere Grenze des Intervalls.
 
-## Methoden
-### 1. `setStartTime($time)`
-Setzt die Startzeit des Intervalls.
+## Öffentliche und private Methoden
+### Öffentliche Methoden
+- **is_in_interval(value: DECIMAL)**: Überprüft, ob der gegebene Wert `value` im Intervall enthalten ist.
+- **extract_bounds(interval: ts_interval_bounds)**: Gibt die Grenzen des Intervalls als ein Array zurück.
 
-#### Beispiel:
-```php
-$checker = new interval_checker();
-$checker->setStartTime('2026-03-01 12:00:00');
+### Private Methoden
+Diese Methoden sind intern und nicht für den direkten Zugriff von außen vorgesehen.
+
+## Nutzung Beispiele
+### Beispiel 1: Verwendung mit Dezimalzahlen 
+```plaintext
+let checker = new interval_checker();
+let bounds = { lower: 5.5, upper: 10.4 };
+let result = checker.is_in_interval(7.2, bounds);
+console.log(result); // Gibt true zurück
 ```
 
-### 2. `setEndTime($time)`
-Setzt die Endzeit des Intervalls.
-
-#### Beispiel:
-```php
-$checker->setEndTime('2026-03-02 12:00:00');
+### Beispiel 2: Verwendung mit Intervallnotation
+```plaintext
+let bounds1 = { lower: 3.0, upper: 7.0 };
+let bounds2 = { lower: 1.0, upper: 4.0 };
+let result1 = checker.is_in_interval(3.0, bounds1); // [3:7]
+let result2 = checker.is_in_interval(4.5, bounds2); // ]1:4]
 ```
 
-### 3. `isWithinInterval($time)`
-Überprüft, ob die gegebene Zeit innerhalb des definierten Intervalls liegt.
-
-#### Beispiel:
-```php
-if ($checker->isWithinInterval('2026-03-01 15:00:00')) {
-    echo 'Die Zeit liegt im Intervall.';
-} else {
-    echo 'Die Zeit liegt außerhalb des Intervalls.';
-}
-```
-
-## Anwendungsbeispiele
-- Überprüfung von Reservierungen:
-  - Verwendung der `interval_checker`, um sicherzustellen, dass Zeiträume für Buchungen nicht überschneiden.
-
-- Validierung von Zeitstempeln in Datenbanken:
-  - Gewährleistung, dass gespeicherte Zeitstempel immer in gültigen Intervallen liegen.
+## Unit Tests Übersicht
+Die Klasse wird durch verschiedene Tests gedeckt, um sicherzustellen, dass die Methoden wie erwartet funktionieren. Prüfen Sie die Testabdeckung.
 
 ## Technische Details
-Die Klasse implementiert fortgeschrittene Zeitberechnungen und nutzt die native PHP DateTime-Klasse für maximale Flexibilität und Genauigkeit. Alle Zeiten sollten im UTC-Format angegeben werden, um Verzerrungen aufgrund von Zeitzonen zu vermeiden.
+### DECFLOAT34 Konvertierung
+Die Klasse ermöglicht eine präzise Handhabung von DECFLOAT34-Zahlen, um Genauigkeitsverluste zu minimieren.
+### Fehlerbehandlung
+Robuste Mechanismen zur Fehlerbehandlung sind implementiert, um ungültige Eingaben zu verwalten und sicherzustellen, dass die Funktionalität erhalten bleibt.
 
 ## Fazit
-Die `interval_checker` Klasse ist eine leistungsstarke Lösung zur Verwaltung von Zeitintervallen in modernen PHP-Anwendungen und bietet Entwicklern die nötigen Werkzeuge zur Durchführung präziser Zeitüberprüfungen.
+Diese Dokumentation ist gültig ab Version 1.0, erstellt am 2026-03-03. Die `interval_checker`-Klasse bietet eine effiziente und effektive Lösung zur Überprüfung von Intervallen in Ihrer Anwendung.
