@@ -3,21 +3,21 @@ Diese Dokumentation beschreibt die Klasse `/rbgrp/interval_checker`, die verwend
 
 # Klasse Definition
 ```abap
-type: class /rbgrp/interval_checker definition
-  public
-  methods:
-    is_in_interval importing value(iv_value) type i returning value(rv_result) type abap_bool,
-    extract_bounds returning value(rt_bounds) type ts_interval_bounds.
-endclass.
-```
-
-# Datentypen
-## ts_interval_bounds
-```abap
-type: begin of ts_interval_bounds,
-  lower_bound type i,
-  upper_bound type i,
-type: end of ts_interval_bounds.
+  PUBLIC SECTION.
+    CLASS-METHODS is_in_interval
+      IMPORTING
+        i_value       TYPE string
+        i_interval    TYPE string
+      RETURNING
+        VALUE(result) TYPE abap_bool
+      RAISING
+        cx_sy_conversion_no_number.
+  PRIVATE SECTION.
+    CLASS-METHODS extract_bounds
+      IMPORTING
+        i_interval    TYPE string
+      RETURNING
+        VALUE(result) TYPE ts_interval_bounds.
 ```
 
 # öffentliche Methoden
@@ -32,37 +32,8 @@ Diese Methode extrahiert die Grenzen des Intervalls und gibt sie als `ts_interva
 1. **Beispiel 1**: 
 ```abap
  DATA(lo_checker) = NEW /rbgrp/interval_checker().
- DATA(lv_result) = lo_checker->is_in_interval( iv_value = 50 ).
+ DATA(lv_result) = lo_checker->is_in_interval( i_value = 50 i_interval = '[20:80]).
 * Hier wird geprüft, ob 50 im Intervall liegt.
-```
-
-2. **Beispiel 2**: 
-```abap
- DATA(lo_checker) = NEW /rbgrp/interval_checker().
- DATA(lt_bounds) = lo_checker->extract_bounds().
-* Hier werden die Intervallgrenzen extrahiert.
-```
-
-3. **Beispiel 3**: 
-```abap
- DATA(lo_checker) = NEW /rbgrp/interval_checker().
- IF lo_checker->is_in_interval( iv_value = 100 ) = abap_true.
-* Prüfen, ob 100 im Intervall liegt und entsprechende Logik anwenden.
-```
-
-4. **Beispiel 4**: 
-```abap
- DATA(lo_checker) = NEW /rbgrp/interval_checker().
- DATA(lv_bound) = lo_checker->extract_bounds( ).
-* Grenzen werden extrahiert und weiterverarbeitet.
-```
-
-5. **Beispiel 5**: 
-```abap
- DATA(lo_checker) = NEW /rbgrp/interval_checker().
- IF lo_checker->is_in_interval( iv_value = 75 ) = abap_false.
-  " Logik bei Nichteinbezug ins Intervall.
- ENDIF.
 ```
 
 # Unit-Tests Übersicht
